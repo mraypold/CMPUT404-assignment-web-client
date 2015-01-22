@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 # Copyright 2013 Abram Hindle
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,6 +18,9 @@
 # Write your own HTTP GET and POST
 # The point is to understand what you have to send and get experience with it
 
+DEBUG = True
+
+import select
 import sys
 import socket
 import re
@@ -36,7 +39,45 @@ class HTTPClient(object):
     #def get_host_port(self,url):
 
     def connect(self, host, port):
-        # use sockets!
+        sock = self.init_socket()
+        ip = self.get_host_ip(host, sock)
+
+        try:
+            sock.connect((ip, port))
+        except socket.error as msg:
+            print 'Connection failed'
+            print 'Error code: %s, message: %s' %(str(msg[0]), msg[1])
+            sys.exit()
+        else:
+            print 'connected'
+
+        # listen here or elsewhere?
+        return sock
+
+    def init_socket(self):
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        except socket.error as msg:
+            print 'Failed to create socket'
+            print 'Error code: %s, message: %s' %(str(msg[0]), msg[1])
+            sys.exit()
+        else:
+            print 'Socket created'
+        return sock
+
+    def get_host_ip(self, host, socket):
+        try:
+            ip = socket.gethostbyname(host)
+        except socket.gairerror as msg:
+            print 'Host name could not be resolved'
+            print 'Error code: %s, message: %s' %(str(msg[0]), msg[1])
+            sys.exit()
+        else:
+            print 'Host IP: %s' %str(ip)
+        return ip
+
+    def poll_sockets(self, sock):
+        # use select
         return None
 
     def get_code(self, data):
@@ -61,11 +102,13 @@ class HTTPClient(object):
         return str(buffer)
 
     def GET(self, url, args=None):
+        if DEBUG: print 'GETing %s' %url
         code = 500
         body = ""
         return HTTPRequest(code, body)
 
     def POST(self, url, args=None):
+        if DEBUG: print 'POSTing %s' %url
         code = 500
         body = ""
         return HTTPRequest(code, body)
@@ -75,7 +118,7 @@ class HTTPClient(object):
             return self.POST( url, args )
         else:
             return self.GET( url, args )
-    
+
 if __name__ == "__main__":
     client = HTTPClient()
     command = "GET"
@@ -83,6 +126,6 @@ if __name__ == "__main__":
         help()
         sys.exit(1)
     elif (len(sys.argv) == 3):
-        print client.command( sys.argv[1], sys.argv[2] )
+        print client.command( sys.argv[2], sys.argv[1] )
     else:
-        print client.command( command, sys.argv[1] )    
+        print client.command( sys.argv[2], command )
