@@ -4,6 +4,9 @@
 # IDE extensions
 *.idea/
 
+# Ignore log files
+*.out
+
 *.py[cod]
 
 # C extensions
