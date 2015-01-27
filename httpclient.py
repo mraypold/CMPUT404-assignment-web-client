@@ -18,7 +18,6 @@
 # Write your own HTTP GET and POST
 # The point is to understand what you have to send and get experience with it
 
-import logging
 import select
 import sys
 import socket
@@ -27,9 +26,6 @@ import re
 import urllib
 
 VERBOSE = True
-
-LOG = 'client_log.out'
-logging.basicConfig(filename = LOG, level=logging.DEBUG)
 
 def help():
     print "httpclient.py [GET/POST] [URL]\n"
@@ -44,39 +40,26 @@ class HTTPClient(object):
 
     def connect(self, host, port):
         sock = self.init_socket()
-        ip = self.get_host_ip(host)
         try:
-            sock.connect((ip, port))
+            sock.connect((host, port))
         except socket.error as msg:
-            logging.error('Connection failed')
-            logging.error('Error code: %s, message: %s' %(str(msg[0]), msg[1]))
+            print 'Connection failed'
+            print 'Error code: %s, message: %s' %(str(msg[0]), msg[1])
             sys.exit()
         else:
-            logging.info('Connected to %s' %host)
-            # sock.listen(1)
+            print 'Connected to %s' %host
         return sock
 
     def init_socket(self):
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except socket.error as msg:
-            logging.error('Failed to create socket')
-            logging.error('Error code: %s, message: %s' %(str(msg[0]), msg[1]))
+            print 'Failed to create socket'
+            print 'Error code: %s, message: %s' %(str(msg[0]), msg[1])
             sys.exit()
         else:
-            logging.info('Socket created')
+            print 'Socket created'
         return sock
-
-    def get_host_ip(self, host):
-        try:
-            ip = socket.gethostbyname(host)
-        except socket.gaierror as msg:
-            logging.error('Host name could not be resolved')
-            logging.error('Error code: %s, message: %s' %(str(msg[0]), msg[1]))
-            sys.exit()
-        else:
-            logging.info('Host IP: %s' %str(ip))
-        return ip
 
     def poll_sockets(self, sock, request):
         '''Sends the request on the specified socket and polls for response'''
@@ -90,7 +73,10 @@ class HTTPClient(object):
 
             for s in readable:
                 if VERBOSE: print 'Have readable socket'
+                sockin.pop()
                 print(self.recvall(s))
+                # print s.recv(4096)
+                print('wtf is happening')
                 sys.exit()
 
             for s in writable:
@@ -101,6 +87,7 @@ class HTTPClient(object):
             for s in exceptions:
                 if VERBOSE: print 'Have exception'
                 sys.exit()
+
         return None
 
     def get_code(self, data):
@@ -117,11 +104,12 @@ class HTTPClient(object):
         buffer = bytearray()
         done = False
         while not done:
-            part = sock.recv(1024)
+            part = sock.recv(4096)
             if (part):
                 buffer.extend(part)
             else:
                 done = not part
+            print str(buffer)
         return str(buffer)
 
     def GET(self, url, args=None):

@@ -10,7 +10,7 @@ Make a simple web-client like curl or wget
 Contributors / Licensing
 ========================
 
-Previous Apache 2 license for updated content maintained by Michael Raypold
+Apache 2 license extended by Michael Raypold.
 
 Generally everything is LICENSE'D under the Apache 2 license by Abram Hindle.
 
