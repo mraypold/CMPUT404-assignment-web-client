@@ -35,6 +35,9 @@ class HTTPRequest(object):
         self.code = code
         self.body = body
 
+    def __str__(self):
+        return '%s\n%s' %(str(self.code), self.body)
+
 class HTTPHeader(object):
     def __init__(self, path, host, method="GET", message=""):
 
@@ -65,8 +68,8 @@ class HTTPClient(object):
             print 'Connection failed'
             print 'Error code: %s, message: %s' %(str(msg[0]), msg[1])
             sys.exit()
-        else:
-            print 'Connected to %s' %host
+        # else:
+        #     print 'Connected to %s' %host
         return sock
 
     def init_socket(self):
@@ -76,8 +79,8 @@ class HTTPClient(object):
             print 'Failed to create socket'
             print 'Error code: %s, message: %s' %(str(msg[0]), msg[1])
             sys.exit()
-        else:
-            print 'Socket created'
+        # else:
+        #     print 'Socket created'
         return sock
 
     def poll_sockets(self, sock, request):
@@ -126,10 +129,6 @@ class HTTPClient(object):
 
         code, body = self.build_and_send(url, args, "GET")
 
-        print 'debug'
-        print code
-        print 'debug'
-
         return HTTPRequest(code, body)
 
     def POST(self, url, args=None):
@@ -153,12 +152,12 @@ class HTTPClient(object):
         header = HTTPHeader(parsed.path, parsed.hostname, rtype, encoded)
         request = header.get_header()
 
-        print request
-
         port = parsed.port if parsed.port else 80
         sock = self.connect(parsed.hostname, port)
 
         result = self.poll_sockets(sock, request)
+        sys.stdout.write(str(result) + '\n')
+
         return self.parse_result(result)
 
     def parse_result(self, result):
@@ -186,6 +185,6 @@ if __name__ == "__main__":
         help()
         sys.exit(1)
     elif (len(sys.argv) == 3):
-        print client.command( sys.argv[1], sys.argv[2] )
+        print client.command( sys.argv[2], sys.argv[1] )
     else:
-        print client.command( command, sys.argv[1] )    
+        print client.command( sys.argv[1], command )

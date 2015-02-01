@@ -27,24 +27,24 @@
      a HTTPRequest object
 
 ** Requirements
-   - [ ] Implement basic HTTP GET
-   - [ ] Implement basic HTTP POST
-   - [ ] The httpclient can pass all the tests in freetests.py
+   - [x] Implement basic HTTP GET
+   - [x] Implement basic HTTP POST
+   - [x] The httpclient can pass all the tests in freetests.py
    - [ ] The webserver can pass all the tests in not-free-tests.py
      (you don't have this one!)
-   - [ ] HTTP POST can post vars
-   - [ ] HTTP POST handles at least Content-Type:
+   - [x] HTTP POST can post vars
+   - [x] HTTP POST handles at least Content-Type:
      application/x-www-form-urlencoded
-   - [ ] httpclient can handle 404 requests and 200 requests
+   - [x] httpclient can handle 404 requests and 200 requests
 
 ** Restrictions
-   - [ ] Use Python 2.7
-   - [ ] Must run in the undergrad lab (Ubuntu 12.04)
-   - [ ] License your httpclient properly (use an OSI approved license)
+   - [x] Use Python 2.7
+   - [x] Must run in the undergrad lab (Ubuntu 12.04)
+   - [x] License your httpclient properly (use an OSI approved license)
      - Put your name on it!
-   - [ ] You cannot use a Web Client library except for urllib utils
+   - [x] You cannot use a Web Client library except for urllib utils
      to convert strings to url-encode and query-string format and back
-   - [ ] You should use the socket library that comes with python
+   - [x] You should use the socket library that comes with python
 
 ** Recommendations
    - Use the server.py skeleton. Handling sockets yourself is not
@@ -69,9 +69,9 @@
      python freetests.py
 
    - Marks will be deducted if I cannot successfully do this.
-     
+
    - Marks will be deducted for using library code that does the assignment
-   
+
    - Marks can be deducated for egregious violation of requirements (e.g. hard
      coding path names etc.).
 

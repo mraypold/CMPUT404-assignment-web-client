@@ -23,3 +23,5 @@ Sources / Collaboration
 ========================
 
 * Use of select library with sockets. [one](http://pymotw.com/2/select/), [two](http://stackoverflow.com/questions/16425081/select-based-socket-loop-without-polling)
+
+* Setting up threading for tests [StackOverflow](http://stackoverflow.com/questions/7720953/how-to-write-unit-test-for-python-socketserver-request-handler)
