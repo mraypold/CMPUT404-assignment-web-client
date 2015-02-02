@@ -47,9 +47,9 @@ class HTTPHeader(object):
         self.request += "Accept: */*\r\n"
 
         if method == "GET":
-            self.request += "Content-type: %s\r\n" %(mimetypes.guess_type(path)[0]) # Test THIS TODO
+            self.request += "Content-type: %s; charset=utf-8\r\n" %(mimetypes.guess_type(path)[0])
         else:
-            self.request += "Content-type: application/x-www-form-urlencoded\r\n"
+            self.request += "Content-type: application/x-www-form-urlencoded; charset=utf-8\r\n"
 
         self.request += "Connection: close\r\n"
         self.request += "Content-Length: %s\r\n\r\n" %len(message)
